@@ -1,0 +1,11 @@
+{
+  "name": " ",
+  "version": "0.0.1",
+  "description": "",
+  "private": true,
+  "license": "",
+  "author": "Daniel Schreurs",
+  "devDependencies": {
+    "vite": "^5.1.6"
+  }
+}
