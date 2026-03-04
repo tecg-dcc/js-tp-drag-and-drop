@@ -265,11 +265,6 @@ li {
     transition: 0.2s ease;
 }
 
-.alert {
-    display: none;
-}
-
-
 .dragEnter {
 
     border: 5px dotted #999999;

@@ -19,7 +19,14 @@ const app = {
             [this.liElementToMove.textContent, (evt.currentTarget as HTMLLIElement).textContent]
 
     },
-    addEventListeners() {
+    isOrdered() {
+        for (let i = 0; i < this.cardElements.length - 1; i++) {
+            if (parseInt(this.cardElements[i].textContent) > parseInt(this.cardElements[i + 1].textContent)) {
+                return false;
+            }
+        }
+        return true;
+    }, addEventListeners() {
         // @ts-ignore
         for (const cardElement of this.cardElements) {
             cardElement.addEventListener('dragstart', (evt: DragEvent) => {
@@ -38,9 +45,20 @@ const app = {
                 this.addDropEvent(evt);
             });
         }
+
+        this.formElement.addEventListener('submit', (evt: SubmitEvent) => {
+            evt.preventDefault();
+            if (this.isOrdered()) {
+                this.alertMessageElement.textContent = "Super ! C’est bon :) "
+            } else {
+                this.alertMessageElement.textContent = "Eh bien non ce n’est pas bon..."
+            }
+        });
     },
     init() {
         this.cardElements = document.querySelectorAll(settings.liSelector);
+        this.formElement = document.querySelector(settings.formSelector);
+        this.alertMessageElement = document.querySelector(settings.alertMessageSelector);
         this.liElementToMove = null;
         this.addEventListeners();
     },
