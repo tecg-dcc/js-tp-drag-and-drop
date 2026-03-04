@@ -1,6 +1,22 @@
 import {settings} from "./settings";
 
 const app = {
+    init() {
+        this.liElements = document.querySelectorAll(settings.liSelector);
+        this.formElement = document.querySelector(settings.formSelector);
+        this.alertElement = document.querySelector(settings.alertSelector)
+        this.liElementToMove = null;
+        this.addDragEvents();
+        this.formElement.addEventListener('submit', (evt) => {
+            evt.preventDefault();
+            this.isOrdered();
+            if (this.isOrdered()) {
+                this.alertElement.textContent = 'C’est bon :)';
+            } else {
+                this.alertElement.textContent = 'Ce n’est pas bon :(';
+            }
+        });
+    },
     addDragEvents() {
         for (const liElement of this.liElements) {
             liElement.addEventListener('dragstart', (evt: DragEvent) => {
@@ -19,29 +35,15 @@ const app = {
                 this.drop(evt);
             });
         }
-    }, init() {
-        this.liElements = document.querySelectorAll(settings.liSelector);
-        this.formElement = document.querySelector(settings.formSelector);
-        this.alertElement = document.querySelector(settings.alertSelector)
-        this.liElementToMove = null;
-        this.addDragEvents();
-        this.formElement.addEventListener('submit', (evt) => {
-            evt.preventDefault();
-
-            let isOrdered = true;
-            for (let i = 0; i < this.liElements.length - 1; i++) {
-                if (parseInt(this.liElements[i].textContent) > parseInt(this.liElements[i + 1].textContent)) {
-                    isOrdered = false;
-                    break;
-                }
+    }, isOrdered() {
+        let isOrdered = true;
+        for (let i = 0; i < this.liElements.length - 1; i++) {
+            if (parseInt(this.liElements[i].textContent) > parseInt(this.liElements[i + 1].textContent)) {
+                isOrdered = false;
+                break;
             }
-
-            if (isOrdered) {
-                this.alertElement.textContent = 'C’est bon :)';
-            } else {
-                this.alertElement.textContent = 'Ce n’est pas bon :(';
-            }
-        });
+        }
+        return isOrdered;
     },
     drop(evt: DragEvent) {
         this.dragLeave(evt);
